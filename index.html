@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        
+        <title>CSS Randomizer</title>
+   
+            
+        <!-- 
+            A Javascript program that will recolorize the CSS of a web page with random colors. 
+            
+            Please don't judge my laziness here. 
+            This is a love-project, not production code.
+         -->
+         
+         <script src="js/getColorFunctions.js"></script>
+         <script src="js/demos.js"></script>
+         <script src="js/randomColorCssReplace.js"></script>
+         <script src="js/ui.js"></script>
+         <script src="js/fetcher.js"></script>
+         <script src="js/main.js"></script>
+                
+        <script>
+
+            document.onreadystatechange = () => {
+                if (document.readyState === 'complete') {
+                    main();
+                }
+            };
+
+        </script>
+        
+        <style>            
+            .demo.active-demo {
+                background-color: #ffaaaa;
+            }
+        </style>
+
+    </head>
+
+    <body>
+    </body>
+    
+</html>
