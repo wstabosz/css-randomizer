@@ -31,16 +31,18 @@
 
 function addDemosLinks(parent) {
 
+    let header = `
+    <p><strong>Demos</strong></p>
+    <p>Click a link to colorize art.</p>
+    `;
+
+    appendHtmlToParent(header,parent);
+
     var keys = Object.keys(demos);
     for(var i=0;i<keys.length;i++) {
 
         var key = keys[i];        
-        
-        // let div = document.createElement('div');
-        // div.classList.add(['demo','reset']);
-        // div.setAttribute('value',key);
-         //createElement(`<div class="demo" value="${key}" />`);
-
+                
         let cb = document.createElement('input');
         cb.setAttribute('type','checkbox');
         cb.setAttribute('value',key);
@@ -73,13 +75,11 @@ function addDemosLinks(parent) {
 }
 
 function addArtworkLinks(parent) {
-    
 
-    // document.createElement('h1')
-     appendHtmlToParent(
-         '<p><strong>Art Pieces</strong></p>'
-         , parent
-    );
+    let header = `<p><strong>Artwork</strong></p>
+    <p>Click a link to load new art</p>`;
+
+    appendHtmlToParent(header,parent);
 
     var keys = Object.keys(artPieces);
     for(var i=0;i<keys.length;i++) {
@@ -119,16 +119,17 @@ function createElement(html) {
 
 }
 
-function addRepeaterUI(parent) {
+function addPlayerUI(parent) {
 
     var ui = createElement(`
-    <br/>        
+        <p><strong>Player</strong></p>
         <button id="playPauseDemoLoop" type="button">Play selected demos</button>
-    <br/><br/>
+        <br/><br/>
 
         Delay
         <input type="range" name="playerSpeed" id="playerSpeed" 
-            min="250" max="3000" step="50" value="500">
+            min="0" max="3000" step="10" value="500">
+            <br/>
         <output id="playerSpeedOutput" for="playerSpeed">500 ms</output>
     `);    
 
@@ -137,6 +138,7 @@ function addRepeaterUI(parent) {
     let playPauseDemoLoopButton = ui.getElementById('playPauseDemoLoop');
 
     playPauseDemoLoopButton.addEventListener('click', (e) => {
+
         if(playDemoLooper.toggle())
             playPauseDemoLoopButton.innerText='Pause';
         else
@@ -154,7 +156,11 @@ function addRepeaterUI(parent) {
 
 function addBookmarklet(parent) {
 
-    // TODO: refactor and retest
+    /* TODO: 
+    refactor and retest
+    don't include artwork links when injecting
+    */
+
     let currentHref = window.location.href;
 
     var d = document.createElement('div');
@@ -181,39 +187,24 @@ function addBookmarklet(parent) {
     parent.appendChild(d);
 }
 
-
 function ui_main() {
     
     var ui = 
     createElement(`
-        <div class="_ignore" style="border-radius: 10px; margin: 1em; padding: 0.5em; background: white; font-size: 11pt; font-family: Arial, Helvetica, sans-serif; text-align: left; position: absolute; left: 1em; top: 1em; filter: drop-shadow(3px 3px 8px black); z-index: 100000;">
-            <p><strong>Demos</strong></p>
-            <div id="demo-links" />
+        <div class="_ignore" style="width: 15em; border-radius: 10px; margin: 1em; padding: 0.5em; background: white; font-size: 11pt; font-family: Arial, Helvetica, sans-serif; text-align: left; position: absolute; left: 1em; top: 1em; filter: drop-shadow(3px 3px 8px black); z-index: 100000;">
         </div>
     `).firstChild;
     
-    // TODO: add placeholders
     document.getElementsByTagName('body')[0].appendChild(ui);
 
     addDemosLinks(ui);
-    addRepeaterUI(ui)
+    addPlayerUI(ui);
+
     // addBookmarklet(ui);
     addArtworkLinks(ui);
 
-}
-
-function ui_main_old() {
-    
-    var ui = document.createElement('div');
-
-    ui.style.cssText = ' border-radius: 10px; margin: 1em; padding: 0.5em; background: white; font-size: 11pt; font-family: Arial, Helvetica, sans-serif; text-align: left; position: absolute; left: 1em; top: 1em; filter: drop-shadow(3px 3px 8px black); z-index: 100000;';
-    ui.classList.add('_ignore');
-    document.getElementsByTagName('body')[0].appendChild(ui);
-
-    ui.innerHTML = '<p><strong>Demos</strong></p>'
-    addDemosLinks(ui);
-    addRepeaterUI(ui)
-    // addBookmarklet(ui);
-    addArtworkLinks(ui);
-
+    appendHtmlToParent(`<p><strong>Credits</strong></p>
+    <p>Artwork by <a href="https://diana-adrianne.com/">Diana Smith</a></p>
+    <p>JS code by <a href="http://www.drboring.com/">Walter Stabosz</a></p>
+    `, ui);
 }

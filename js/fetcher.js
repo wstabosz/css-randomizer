@@ -54,12 +54,13 @@ function buildUrls(key) {
 async function loadArtwork(key) {
 
     let urls = buildUrls(key);
-    fetchAndInjectHtml(urls.html);
+    clearBody();
     fetchAndInjectCss(urls.css);
+    fetchAndInjectHtml(urls.html);
 
     // I added a timeout because I couldn't figure out a way
     // to detect when the browser had applied the stylesheets 
-    setTimeout(afterLoadArtwork,1000);
+    setTimeout(afterLoadArtwork,500);
     
 }
 
@@ -111,7 +112,6 @@ function getStyleSheet() {
 async function fetchAndInjectHtml(url) {
     let html = await fetchHtmlAsText(url);
     html = getTextInsideBodyElement(html);    
-    clearBody();
     document.body.innerHTML = html;
 }
 

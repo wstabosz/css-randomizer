@@ -6,7 +6,7 @@ I wanted to see what her artwork would look like if I altered the colors of each
 
 I wrote a series of functions that perform different color transformations. You can find these in the file `demos.js`
 
-I apologize for the messy code, it was written in my (very little) spare time. I was all hacking, I did very little actual planning. If you have questions about how it works, please do your own analysis, but feel free to contact me if you get stuck. I'm not a super-javascript wizard (as far as I know, if you think otherwise, please offer me a job).
+I apologize for the messy code, it was written in my (very little) spare time. It was all hacking, I did very little actual planning. If you have questions about how it works, please do your own analysis, but feel free to contact me if you get stuck. I'm not a super-javascript wizard (as far as I know, if you think otherwise, please offer me a job).
 
 # Potential Modifications
 

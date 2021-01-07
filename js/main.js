@@ -1,6 +1,6 @@
 async function main() {
 
-    loadArtwork('purecss-lace');
+    loadArtwork('purecss-zigario');
 
 
     //ui_main();

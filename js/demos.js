@@ -1,3 +1,7 @@
+
+////////////////////////////////////////////////////////////////////
+// START: Code to support playDemoLooper
+
 /*
     randomDemoLooper is a timeout looper which when
     active will run a random styles transformation demo
@@ -34,14 +38,10 @@ const playDemoLooper = {
     },    
 };
 
-const selectedDemos = {};
-
-// const resetSelectedDemos = () => {
-//     let keys = Object.keys(selectedDemos);
-//     for(let i=0;i<keys.length;i++) {
-//         selectedDemos[keys[i]] = false;
-//     }
-// };
+const selectedDemos = {
+    'getRandomColorRgb': true
+    ,'randomRangedRgb': true
+};
 
 let currentDemoIndex = 0;
 let rotateCurrentDemoIndex = (max) => {
@@ -92,6 +92,24 @@ const randomDemo = () => {
     randomDemoCollection[key]();
 };
 
+// END: Code to support playDemoLooper
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+// Start: Code for CSS transformers
+
+/*
+Please note: I failed to comment a lot of this code when I initially 
+wrote it. As a result, I may be getting some CSS terms/definitions wrong 
+in these comments. It's been a while since I've studied CSS, so I forget
+what everything is called.
+
+The function in this section are what I call "CSS style transformation functions"
+(or CSS transformers) (I'm not sure how accurate that term is)
+
+The job of a CSS transformer is to makes changes to the style of a CSS rule
+*/
+
 /**
  * Example of direct rule manipulation.
  * @param {*} cssText 
@@ -110,15 +128,25 @@ function showDisplay(rule) {
     return rule.cssText;
 }
 
+/**
+transformBySelector allows for advanced CSS transformations
+
+You can define {how} to transformation a style, {when} a given rule's selector passes a test
+
+I failed to document the code when I initially wrote it, but I think it's pretty easy to read.
+
+@param {object} map - an array of how-when objects see {hairEyesLips} below for a usage example
+@return {function} - a CSS transformation function (defined above) 
+*/
 function transformBySelector(map) {
-    // TODO: change arg list to an object
+    
     return function(propertyValue, selectorText, rule) {
         
         for(var i=0;i<map.length;i++) {
             
             // if 'how' is an Array, then create a new function that
             // loops through all the functions in how an applies their transform
-            if (map[i].how instanceof Array) {
+            if (Array.isArray(map[i].how) ) {
                 var howArray = map[i].how;
                 map[i].how = function(propertyValue, selectorText, rule) {
                     for(var a=0;a<howArray.length;a++) {
@@ -129,16 +157,17 @@ function transformBySelector(map) {
             }
 
             
-            if (false == (map[i].when instanceof Array)) {
+            if (false == Array.isArray(map[i].when)) {
                 map[i].when = [map[i].when];
             }
 
             // this loop tests the selectorText against a series of tests
-            // if any test in the array is successful, then the transform is applied
+            // if any test in the array is successful, then the transform is applied            
             for(var j=0;j<map[i].when.length;j++) {
                 var when = map[i].when[j];
                 var testPassed = false;
                 
+                // {when-test logic}
                 if (when === '*') {
                     testPassed = true;
                 } else if (when instanceof RegExp) {
@@ -146,12 +175,11 @@ function transformBySelector(map) {
                 } else if (typeof when === 'string') {
                     testPassed = (selectorText.indexOf(when) != -1);
                 }  else if (typeof when === 'function') {
-                    // if when is a function, then you can do more advanced testing
+                    // if {when} is a function, then you can do more advanced testing
                     testPassed = when(propertyValue, selectorText, rule);
                 }
 
                 if (testPassed) {
-                    var ddd = 'debugger!';
                     return map[i].how(propertyValue, selectorText, rule);
                 }
                 
@@ -170,13 +198,6 @@ const transformColors = (getColorFn,skipShowDisplay) => {
     }
 }
 
-const hideEverythingOld = transformBySelector([
-    {
-        func: toggleDisplay,
-        tests: [/(^((?!body|html).)*$)/]
-    }
-]);
-
 const hideEverything = transformBySelector([
     {
         how: toggleDisplay,
@@ -189,6 +210,20 @@ const hideEverything = transformBySelector([
     }
 ]);
 
+/*
+    how-when objects:
+    { 
+        how: 
+            a function which defines how to transform a CSS style
+        when: 
+            a string, RegExp, or function which represents a test
+            against a CSS selector
+    }
+
+    // for more info, search this file for the string "{when-test logic}"
+    // and read the if-else block 
+
+*/
 const hairEyesLips = transformBySelector([
     {
         how: transformColors(getRandomColorRgb),

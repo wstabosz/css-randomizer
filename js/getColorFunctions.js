@@ -34,7 +34,7 @@ function getRandomColorOf(component) {
     return color;
 }
 
-// uncomplete
+// incomplete
 function nextColor2(skip, range, startRgb, rotateColorSlotFn) {
 
 	skip = skip || [15,15,15];
