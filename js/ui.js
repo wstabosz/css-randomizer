@@ -191,7 +191,7 @@ function ui_main() {
     
     var ui = 
     createElement(`
-        <div class="_ignore" style="width: 15em; border-radius: 10px; margin: 1em; padding: 0.5em; background: white; font-size: 11pt; font-family: Arial, Helvetica, sans-serif; text-align: left; position: absolute; left: 1em; top: 1em; filter: drop-shadow(3px 3px 8px black); z-index: 100000;">
+        <div class="_ignore" style="width: 16em; border-radius: 10px; margin: 0.5em; padding: 0.5em; background: white; font-size: 11pt; font-family: Arial, Helvetica, sans-serif; text-align: left; position: absolute; left: 1em; top: 1em; filter: drop-shadow(3px 3px 8px black); z-index: 100000;">
         </div>
     `).firstChild;
     
@@ -204,7 +204,9 @@ function ui_main() {
     addArtworkLinks(ui);
 
     appendHtmlToParent(`<p><strong>Credits</strong></p>
-    <p>Artwork by <a href="https://diana-adrianne.com/">Diana Smith</a></p>
-    <p>JS code by <a href="http://www.drboring.com/">Walter Stabosz</a></p>
+    <p><a href="https://github.com/cyanharlow">Artwork</a>
+    by <a href="https://diana-adrianne.com/">Diana Smith</a></p>
+    <p><a href="https://github.com/wstabosz/css-randomizer">css-randomizer</a>
+    by <a href="http://www.drboring.com/">Walter Stabosz</a></p>
     `, ui);
 }
