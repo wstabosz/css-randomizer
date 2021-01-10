@@ -29,11 +29,20 @@
         
     }
 
-function addDemosLinks(parent) {
+    function addInstructions(parent) {
+        let header = `
+            <p><strong>Instructions</strong></p>
+            <p>Click a transform link to randomize CSS</p>
+            <p>Check a box to add a transform to the playlist</p>            
+        `;
+        appendHtmlToParent(header,parent);
+
+    }
+    
+function addTransformLinks(parent) {
 
     let header = `
-    <p><strong>Demos</strong></p>
-    <p>Click a link to colorize art.</p>
+    <p><strong>Transforms</strong></p>
     `;
 
     appendHtmlToParent(header,parent);
@@ -123,7 +132,7 @@ function addPlayerUI(parent) {
 
     var ui = createElement(`
         <p><strong>Player</strong></p>
-        <button id="playPauseDemoLoop" type="button">Play selected demos</button>
+        <button id="playPauseDemoLoop" type="button">Play</button>
         <br/><br/>
 
         Delay
@@ -142,7 +151,7 @@ function addPlayerUI(parent) {
         if(playDemoLooper.toggle())
             playPauseDemoLoopButton.innerText='Pause';
         else
-            playPauseDemoLoopButton.innerText='Play selected demos';
+            playPauseDemoLoopButton.innerText='Play';
     });
 
     playerSpeed.addEventListener('input', (e) => {
@@ -154,9 +163,20 @@ function addPlayerUI(parent) {
 
 }
 
+/**
+ *  This code adds a bookmarklet that you can install to your web browser
+    
+    You can then run the bookmarklet, it will inject the CSS Randomizer UI
+    onto any web page of your choosing
+
+    I broke the bookmarklet during a refactor, and it needs some changes of its own
+    before it will work
+
+ * @param {*} parent 
+ */
 function addBookmarklet(parent) {
 
-    /* TODO: 
+    /* TODO:     
     refactor and retest
     don't include artwork links when injecting
     */
@@ -197,7 +217,8 @@ function ui_main() {
     
     document.getElementsByTagName('body')[0].appendChild(ui);
 
-    addDemosLinks(ui);
+    addInstructions(ui);
+    addTransformLinks(ui);
     addPlayerUI(ui);
 
     // addBookmarklet(ui);
