@@ -6,7 +6,7 @@ const colorComponents = ['r','g','b'];
 
 
 
-function getRandomColorRgb() {
+function randomColorRgb() {
 	return {
 		r: Math.floor(Math.random() * 256),
 		g: Math.floor(Math.random() * 256),
@@ -45,7 +45,7 @@ function nextColor2(skip, range, startRgb, rotateColorSlotFn) {
 		[128,255],
 	];
 
-	startRgb = startRgb || getRandomColorRgb();	
+	startRgb = startRgb || randomColorRgb();	
 
 	var lastColor = [startRgb.r,startRgb.g,startRgb.b];
 	var colorSlot = 0;
@@ -105,7 +105,7 @@ function nextColor(options) {
         skip: 15, 
         min: 128,
         max: 255,
-        startColorFn: getRandomColorRgb,
+        startColorFn: randomColorRgb,
         // must return either: 0,1,2
         rotateColorSlotFn: function() {
             if (++colorSlot > 2)
@@ -227,7 +227,7 @@ var rotateRgb =
         skip: 15, 
         min: 128,
         max: 255,
-        startColorFn: getRandomColorRgb
+        startColorFn: randomColorRgb
     });
 
 /*

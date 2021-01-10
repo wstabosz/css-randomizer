@@ -17,10 +17,10 @@ const playDemoLooper = {
         playDemoLooper.isActive = isActive;
         if(isActive) {            
             playDemoLooper.start();
-            console.log('started randomDemos');
+            // console.log('started randomDemos');
         } else {
             clearTimeout(playDemoLooper.id);        
-            console.log('stopped randomDemos');
+            // console.log('stopped randomDemos');
         }
         return isActive;
     },
@@ -28,7 +28,6 @@ const playDemoLooper = {
         return playDemoLooper.set(!playDemoLooper.isActive);        
     },
     onTimeout: function() {
-        // randomDemo();
         playNextDemo();
         playDemoLooper.start();
     },
@@ -39,7 +38,7 @@ const playDemoLooper = {
 };
 
 const selectedDemos = {
-    'getRandomColorRgb': true
+    'randomColorRgb': true
     ,'randomRangedRgb': true
 };
 
@@ -81,15 +80,15 @@ const playNextDemo = () => {
 };
 
 const playDemo = (key) => {
-    highlightDemoLink(key);
+    if(key !== 'randomDemo')
+        highlightDemoLink(key);
     demos[key]();
 };
 
 const randomDemo = () => {    
-    var keys = Object.keys(randomDemoCollection);
-    // var limit = keys.indexOf('stop') - 1;
-    var key =  keys[randomIntFromInterval(0, keys.length-1)];
-    randomDemoCollection[key]();
+    var key = getRandomDemoKey();
+    highlightDemoLink(key);
+    demos[key]();
 };
 
 // END: Code to support playDemoLooper
@@ -226,7 +225,7 @@ const hideEverything = transformBySelector([
 */
 const hairEyesLips = transformBySelector([
     {
-        how: transformColors(getRandomColorRgb),
+        how: transformColors(randomColorRgb),
         when: ['hair']
     },
     {
@@ -243,7 +242,7 @@ const hairEyesLips = transformBySelector([
     },
 ]);
 
-const makeDemoFn = function(getColorFn) {    
+const makeTransformFunc = function(getColorFn) {    
     return function() { 
         getColorFn({resetStartColor: true});
         updateAllStyles(transformColors(getColorFn), settings.updateDelay)
@@ -251,38 +250,46 @@ const makeDemoFn = function(getColorFn) {
 };
 
 const demos = {
-    getRandomColorRgb: makeDemoFn(getRandomColorRgb),
-    randomReds: makeDemoFn(randomReds),
-    randomGreens: makeDemoFn(randomGreens),
-    randomBlues: makeDemoFn(randomBlues),
-    randomRedsGreensBlues: makeDemoFn(randomRedsGreensBlues),
-    randomRangedRgb: makeDemoFn(randomRangedRgb),
-    randomRangedRgbEasy: makeDemoFn(randomRangedRgbEasy),
-    rotateRgb: makeDemoFn(rotateRgb),    
-    rotateReds: makeDemoFn(rotateReds),
-    rotateGreens: makeDemoFn(rotateGreens),
-    rotateBlues: makeDemoFn(rotateBlues),
+    randomColorRgb: makeTransformFunc(randomColorRgb),
+    randomReds: makeTransformFunc(randomReds),
+    randomGreens: makeTransformFunc(randomGreens),
+    randomBlues: makeTransformFunc(randomBlues),
+    randomRedsGreensBlues: makeTransformFunc(randomRedsGreensBlues),
+    randomRangedRgb: makeTransformFunc(randomRangedRgb),
+    randomRangedRgbEasy: makeTransformFunc(randomRangedRgbEasy),
+    rotateRgb: makeTransformFunc(rotateRgb),    
+    rotateReds: makeTransformFunc(rotateReds),
+    rotateGreens: makeTransformFunc(rotateGreens),
+    rotateBlues: makeTransformFunc(rotateBlues),
     hairEyesLips: () => updateAllStyles(hairEyesLips),
-    hideEverything: () => updateAllStyles(hideEverything),
+    // hideEverything: () => updateAllStyles(hideEverything),
     randomDemo
 }
 
-const randomDemoCollection = (() => {
-   const {
-       hairEyesLips
-       , hideEverything
-       , randomDemo    
-    , ...rest } = demos;
-    // the above line creates a new object containing 
-    // the items from demos, except for the ones prior
-    // to ...rest
-   return rest; 
-})();
+// https://stackoverflow.com/a/41169035
+const demosToExcludeFromRandomChoices = [
+    'hairEyesLips'
+    , 'randomDemo'
+];
+
+const randomDemoCollection = 
+    Object.keys(demos).filter(o=> !demosToExcludeFromRandomChoices.includes(o));
+
+const getRandomDemoKey = () => {
+    let i = Math.floor(Math.random() * randomDemoCollection.length);
+    return randomDemoCollection[i];
+}
+
+// const randomDemoCollection2 = (() => {
+//    const {
+//        hairEyesLips
+//        , hideEverything
+//        , randomDemo    
+//     , ...rest } = demos;
+//     // the above line creates a new object containing 
+//     // the items from demos, except for the ones prior
+//     // to ...rest
+//    return rest; 
+// })();
 
 
-// { 
-//     hairEyesLips, 
-//     hideEverything, 
-//     randomDemo, 
-//     ...
-//     randomDemoCollection } = demo;

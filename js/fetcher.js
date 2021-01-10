@@ -31,6 +31,14 @@ const artPieces = {
     }    
 };
 
+// on-start, the app loads with a random art piece
+// but I want to exclude purecss-character because it's
+// slow to load and transforms are buggy 
+const randomArtWorkCollection = 
+    Object.keys(artPieces)
+    .filter(o=>o!='purecss-character');
+ 
+
 function buildUrls(key) {
     let html = artPieces[key].html;
     let css = artPieces[key].css;
@@ -51,7 +59,33 @@ function buildUrls(key) {
     return await (await fetch(url)).text();
 }
 
+const getRandomKey = (object) => {
+    let keys = Object.keys(object);
+    let i = Math.floor(Math.random() * keys.length);
+    return keys[i];
+};
+
+const justForFun = (size,iterations) => {
+    // this fn tests the browsers randomness
+    let a;
+    (a = []).length = size; 
+    a.fill(0);
+    for(let i=0;i<iterations;i++) {
+        r = Math.floor(Math.random() * size);
+        a[r]++
+    }
+    return a;
+};
+
+const getRandomArtwork = () => {
+    let i = Math.floor(Math.random() * randomArtWorkCollection.length);
+    return randomArtWorkCollection[i];
+}
+
 async function loadArtwork(key) {
+
+    if(!key)
+        key = getRandomArtwork()
 
     let urls = buildUrls(key);
     clearBody();
